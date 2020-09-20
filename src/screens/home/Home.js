@@ -6,6 +6,10 @@ import moviesData from '../../common/moviesData';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import FormControl from '@material-ui/core/FormControl';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme =>({
     root: {
@@ -22,7 +26,19 @@ upcomingMoviesHeading: {
         flexWrap: 'nowrap',
         transform: 'translateZ(0)',
         width: '100%'
-            }
+            },
+            gridListMain: {
+                transform: 'translateZ(0)',
+                cursor: 'pointer'
+            },
+            formControl: {
+                margin: theme.spacing.unit,
+                minWidth: 240,
+                maxWidth: 240
+             },
+             title: {
+                color: theme.palette.primary.light,
+             }
     });
 
 
@@ -38,11 +54,37 @@ class Home extends Component{
                 <GridList cols={5} className={classes.gridListUpcomingMovies}>
                 {moviesData.map(movie => (
                     <GridListTile key={movie.id}>
-                        <img src={movie.poster_url} alt={movie.title}/>
+                        <img src={movie.poster_url} className="movie-poster" alt={movie.title}/>
                         <GridListTileBar title={movie.title}/>
                         </GridListTile>
                 ))}
                 </GridList>
+                <div className="flex-container">
+                    <div className="left">
+                        <GridList cellHeight={350} cols={4} className={classes.gridListMain}>
+                            {moviesData.map(movie => (
+                                <GridListTile className="released-movie-grid-item" key={"grid" + movie.id}>
+                                    <img src={movie.poster_url} className="movie-poster" alt={movie.title} />
+                                    <GridListTileBar
+                                        title={movie.title}
+                                        subtitle={<span>Release Date: {new Date(movie.release_date).toDateString()}</span>}
+                                    />
+                                </GridListTile>
+                            ))}
+                        </GridList>
+                    </div>
+                    <div className="right">
+                    <Card>
+                        <CardContent>
+                        <FormControl className={classes.formControl}>
+                            <Typography className={classes.title} color="textSecondary">
+                                FIND MOVIES BY:
+                            </Typography>
+                        </FormControl>
+                        </CardContent>
+                    </Card>
+                    </div>
+                </div>
             </div>
         )
     }
